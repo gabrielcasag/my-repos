@@ -3,9 +3,15 @@ import { RepositoryItem } from "./RepositoryItem";
 
 import '../styles/repository.scss';
 
+interface Repository {
+  name: string;
+  full_name: string;
+  description: string;
+  html_url: string;
+}
 
 export function RepositoryList() {
-  const [repositoryList, setRepositoryList] = useState([]);
+  const [repositoryList, setRepositoryList] = useState<Repository[]>([]);
 
   useEffect(() => {
     fetch('https://api.github.com/users/gabrielcasag/repos')
