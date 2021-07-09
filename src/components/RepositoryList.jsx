@@ -1,20 +1,37 @@
+import { useState, useEffect } from "react";
 import { RepositoryItem } from "./RepositoryItem";
 
-const repository = {
-  name: 'repo-obj',
-  description: 'Repository object',
-  link: 'https://github.com/gabrielcasag'
-}
+import '../styles/repository.scss';
+
 
 export function RepositoryList() {
+  const [repositoryList, setRepositoryList] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/gabrielcasag/repos')
+      .then(response => response.json())
+      .then(data => setRepositoryList(data));
+  }, []);
+  //sem dependencia, executa so qnd o componente aparecer na tela
+
   return (
-    <section className="repo-list">
-      <h1>Repository List</h1>
+    <section className="repository-list">
+      <h1>
+        My&nbsp;
+        <a href="https://github.com/gabrielcasag" id="my_repo" target="_blank">
+          Repository
+        </a> 
+          &nbsp;List using GitHub API 🤠
+      </h1>
 
       <ul>
-        <RepositoryItem repository="some repo" />
-        <RepositoryItem />
-        <RepositoryItem />
+        {
+          repositoryList.map(repository => {
+            return (
+              <RepositoryItem key={repository.name} repository={repository} />
+            );
+          })
+        }
       </ul>
     </section>
   )
